@@ -5,8 +5,7 @@ export const profile = {
   role: "Software Engineer",
   location: "Hyderabad, India",
   email: "poojithakancharla0609@gmail.com",
-  // TODO: replace with your real LinkedIn URL
-  linkedin: "https://www.linkedin.com/in/your-profile",
+  linkedin: "https://www.linkedin.com/in/poojitha-kancharla-3b4b7235b/",
   github: "https://github.com/Poojitha0609",
   summary:
     "Software Engineer with hands-on experience in web development, UI/UX design, and building task management, ticketing, and CMS applications. Skilled in React.js, JavaScript, Python, and SQL, with knowledge of REST APIs, CRUD operations, and database management. Strong foundation in software development, problem-solving, and AI-assisted development tools.",

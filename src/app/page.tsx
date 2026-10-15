@@ -1,196 +1,157 @@
-import Section from "@/components/Section";
-import {
-  certifications,
-  education,
-  experience,
-  profile,
-  projects,
-  skills,
-} from "@/data/resume";
+import Link from "next/link";
+import Typewriter from "@/components/Typewriter";
+import { color } from "@/components/brutal";
+import { profile } from "@/data/resume";
 
-const nav = ["about", "skills", "experience", "projects", "education", "contact"];
+// Sticker chips drifting around the edges of the screen
+const floating = [
+  { label: "React", pos: "left-[6%] top-[14%] -rotate-6", delay: "0s" },
+  { label: "Node.js", pos: "right-[8%] top-[12%] rotate-3", delay: "1.2s" },
+  { label: "Python", pos: "left-[10%] bottom-[18%] rotate-6", delay: "2.1s" },
+  { label: "SQL", pos: "right-[12%] bottom-[22%] -rotate-3", delay: "0.6s" },
+  { label: "AWS", pos: "left-[38%] bottom-[8%] rotate-2", delay: "1.8s" },
+  { label: "MongoDB", pos: "right-[2%] top-[30%] -rotate-2", delay: "2.6s" },
+  { label: "Git", pos: "left-[28%] top-[6%] rotate-3", delay: "3s" },
+  { label: "Tailwind", pos: "right-[26%] bottom-[6%] -rotate-6", delay: "1.5s" },
+];
 
-const card = "rounded-2xl border border-[var(--line)] bg-[var(--card)] p-6";
-const chip =
-  "rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent";
+// Badges travelling around the two orbit rings
+const innerOrbit = ["JS", "Java", "C", "HTML"];
+const outerOrbit = ["Express", "MySQL", "CSS", "Bootstrap", "Vercel", "React"];
 
-export default function Home() {
+function placeOnRing(items: string[]) {
+  return items.map((label, i) => {
+    const angle = (i / items.length) * 2 * Math.PI;
+    return {
+      label,
+      left: `${50 + 50 * Math.cos(angle)}%`,
+      top: `${50 + 50 * Math.sin(angle)}%`,
+    };
+  });
+}
+
+const codeLines = [
+  { text: "const poojitha = {", color: "" },
+  { text: '  role: "Software Engineer",', color: "text-lime" },
+  { text: '  stack: ["React", "Node", "SQL"],', color: "text-aqua" },
+  { text: "  pizza: Infinity,", color: "text-sun" },
+  { text: "};", color: "" },
+];
+
+export default function Hello() {
   return (
-    <>
-      <header className="sticky top-0 z-10 border-b border-[var(--line)] bg-[var(--bg)]/80 backdrop-blur">
-        <nav className="mx-auto flex max-w-4xl items-center justify-between px-4 py-4">
-          <a href="#top" className="font-bold">
-            PK<span className="text-accent">.</span>
-          </a>
-          <ul className="hidden gap-6 text-sm text-[var(--muted)] sm:flex">
-            {nav.map((id) => (
-              <li key={id}>
-                <a href={`#${id}`} className="capitalize hover:text-accent">
-                  {id}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </header>
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-16">
+      <div className="tech-grid animate-grid pointer-events-none absolute inset-0" />
 
-      <main id="top" className="mx-auto max-w-4xl px-4">
-        {/* Hero */}
-        <section className="py-24 sm:py-32">
-          <p className="mb-4 font-medium text-accent">Hi, I&apos;m</p>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            {profile.name}
+      {floating.map((f, i) => (
+        <span
+          key={f.label}
+          className={`pointer-events-none absolute hidden md:block ${f.pos}`}
+        >
+          <span
+            className={`animate-float brutal block px-3 py-1.5 font-mono text-xs font-bold text-ink shadow-brutal-sm ${color(i).bg}`}
+            style={{ animationDelay: f.delay }}
+          >
+            {`<${f.label} />`}
+          </span>
+        </span>
+      ))}
+
+      <div className="relative z-10 grid w-full max-w-5xl items-center gap-12 lg:grid-cols-2">
+        {/* Greeting */}
+        <div className="text-center lg:text-left">
+          <p className="animate-fade-up font-mono text-sm font-bold text-lime">
+            $ ./say-hello.sh
+          </p>
+          <h1
+            className="animate-fade-up mt-4 text-6xl font-bold uppercase tracking-tight sm:text-8xl"
+            style={{ animationDelay: "0.15s" }}
+          >
+            Hello
+            <span className="animate-wave ml-3 inline-block origin-[70%_70%]">👋</span>
           </h1>
-          <p className="mt-4 text-xl text-[var(--muted)] sm:text-2xl">
-            {profile.role} · {profile.location}
+          <p
+            className="animate-fade-up mt-5 text-2xl font-bold sm:text-3xl"
+            style={{ animationDelay: "0.3s" }}
+          >
+            I&apos;m{" "}
+            <span className="inline-block -rotate-2 rounded-lg border-[3px] border-paper bg-pink px-2 uppercase text-ink shadow-brutal-sm">
+              {profile.name}
+            </span>
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="#projects"
-              className="rounded-lg bg-accent px-5 py-2.5 font-medium text-white hover:opacity-90"
+          <p
+            className="animate-fade-up mt-5 h-8 font-mono text-lg text-dim sm:text-xl"
+            style={{ animationDelay: "0.45s" }}
+          >
+            {"> "}
+            <Typewriter
+              words={[
+                "Software Engineer",
+                "React Developer",
+                "UI/UX Enthusiast",
+                "Problem Solver",
+              ]}
+            />
+          </p>
+
+          <div
+            className="animate-fade-up mt-10 flex justify-center lg:justify-start"
+            style={{ animationDelay: "0.6s" }}
+          >
+            <Link
+              href="/home"
+              className="brutal brutal-press group inline-flex items-center gap-2 bg-lime px-7 py-3.5 text-lg font-bold uppercase text-ink"
             >
-              View projects
-            </a>
-            <a
-              href={`mailto:${profile.email}`}
-              className="rounded-lg border border-[var(--line)] px-5 py-2.5 font-medium hover:border-accent hover:text-accent"
-            >
-              Get in touch
-            </a>
+              Enter Portfolio
+              <span className="transition group-hover:translate-x-1">→</span>
+            </Link>
           </div>
-        </section>
+        </div>
 
-        <Section id="about" title="About">
-          <p className="max-w-3xl text-lg leading-relaxed text-[var(--muted)]">
-            {profile.summary}
-          </p>
-        </Section>
-
-        <Section id="skills" title="Skills">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {skills.map((s) => (
-              <div key={s.group} className={card}>
-                <h3 className="mb-3 font-semibold">{s.group}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {s.items.map((i) => (
-                    <span key={i} className={chip}>
-                      {i}
-                    </span>
-                  ))}
-                </div>
+        {/* Orbit + code card */}
+        <div className="relative mx-auto aspect-square w-[calc(100%-6rem)] max-w-[280px] sm:max-w-[420px]">
+          <div className="animate-spin-slow orbit-ring absolute inset-0 rounded-full border-2 border-dashed border-paper/30">
+            {placeOnRing(outerOrbit).map((b) => (
+              <div key={b.label} className="absolute h-0 w-0" style={{ left: b.left, top: b.top }}>
+                <span className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border-2 border-paper bg-panel px-3 py-1 font-mono text-xs font-bold">
+                  {b.label}
+                </span>
               </div>
             ))}
           </div>
-        </Section>
-
-        <Section id="experience" title="Experience">
-          <ol className="space-y-10 border-l border-[var(--line)] pl-6">
-            {experience.map((e) => (
-              <li key={e.company} className="relative">
-                <span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-accent" />
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-lg font-semibold">
-                    {e.title} <span className="text-accent">@ {e.company}</span>
-                  </h3>
-                  <span className="text-sm text-[var(--muted)]">{e.period}</span>
-                </div>
-                <p className="text-sm text-[var(--muted)]">{e.location}</p>
-                <ul className="mt-3 list-disc space-y-1.5 pl-5 text-[var(--muted)]">
-                  {e.points.map((p) => (
-                    <li key={p}>{p}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ol>
-        </Section>
-
-        <Section id="projects" title="Projects">
-          <div className="grid gap-6 md:grid-cols-2">
-            {projects.map((p) => (
-              <article
-                key={p.name}
-                className={`${card} flex flex-col transition hover:-translate-y-1 hover:border-accent`}
-              >
-                <h3 className="text-xl font-bold">{p.name}</h3>
-                <p className="mb-4 text-sm text-accent">{p.tagline}</p>
-                <ul className="mb-6 list-disc space-y-1.5 pl-5 text-sm text-[var(--muted)]">
-                  {p.points.map((pt) => (
-                    <li key={pt}>{pt}</li>
-                  ))}
-                </ul>
-                <div className="mt-auto flex flex-wrap gap-2">
-                  {p.tech.map((t) => (
-                    <span key={t} className={chip}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </article>
+          <div className="animate-spin-slow-reverse orbit-ring absolute inset-[18%] rounded-full border-2 border-dashed border-lime/50">
+            {placeOnRing(innerOrbit).map((b, i) => (
+              <div key={b.label} className="absolute h-0 w-0" style={{ left: b.left, top: b.top }}>
+                <span
+                  className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-paper px-3 py-1 font-mono text-xs font-bold text-ink ${color(i + 1).bg}`}
+                >
+                  {b.label}
+                </span>
+              </div>
             ))}
           </div>
-        </Section>
 
-        <Section id="education" title="Education & Certifications">
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className={card}>
-              <h3 className="font-semibold">{education.school}</h3>
-              <p className="text-[var(--muted)]">{education.degree}</p>
-              <p className="mt-3 text-sm text-[var(--muted)]">{education.period}</p>
-              <p className="mt-1 font-semibold text-accent">{education.score}</p>
-            </div>
-            <div className={card}>
-              <h3 className="mb-3 font-semibold">Certifications</h3>
-              <ul className="space-y-2 text-sm text-[var(--muted)]">
-                {certifications.map((c) => (
-                  <li key={c} className="flex gap-2">
-                    <span className="text-accent">✓</span>
-                    {c}
-                  </li>
-                ))}
-              </ul>
+          {/* Code card in the middle */}
+          <div className="absolute inset-[30%] flex items-center justify-center">
+            <div className="brutal w-max shrink-0 bg-panel p-3 font-mono text-[8px] leading-relaxed sm:text-[11px]">
+              <div className="mb-2 flex gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full border border-ink bg-pink" />
+                <span className="h-2.5 w-2.5 rounded-full border border-ink bg-sun" />
+                <span className="h-2.5 w-2.5 rounded-full border border-ink bg-lime" />
+              </div>
+              {codeLines.map((l, i) => (
+                <div
+                  key={i}
+                  className={`animate-fade-up whitespace-pre ${l.color}`}
+                  style={{ animationDelay: `${0.8 + i * 0.25}s` }}
+                >
+                  {l.text}
+                </div>
+              ))}
             </div>
           </div>
-        </Section>
-
-        <Section id="contact" title="Contact">
-          <div className={`${card} text-center`}>
-            <h3 className="text-2xl font-bold">Let&apos;s work together</h3>
-            <p className="mx-auto mt-2 max-w-md text-[var(--muted)]">
-              I&apos;m open to software engineering roles and collaborations. Drop me a
-              message!
-            </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <a
-                href={`mailto:${profile.email}`}
-                className="rounded-lg bg-accent px-5 py-2.5 font-medium text-white hover:opacity-90"
-              >
-                Email me
-              </a>
-              <a
-                href={profile.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg border border-[var(--line)] px-5 py-2.5 font-medium hover:border-accent hover:text-accent"
-              >
-                LinkedIn
-              </a>
-              <a
-                href={profile.github}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg border border-[var(--line)] px-5 py-2.5 font-medium hover:border-accent hover:text-accent"
-              >
-                GitHub
-              </a>
-            </div>
-          </div>
-        </Section>
-      </main>
-
-      <footer className="border-t border-[var(--line)] py-8 text-center text-sm text-[var(--muted)]">
-        © {new Date().getFullYear()} {profile.name}. Built with Next.js & Tailwind CSS.
-      </footer>
-    </>
+        </div>
+      </div>
+    </main>
   );
 }

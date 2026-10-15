@@ -1,35 +1,146 @@
 @import "tailwindcss";
 
+/* Dark neobrutalism: flat loud colours, thick borders, hard offset shadows */
 @theme {
-  --color-accent: #6d5ef5;
-  --color-accent-soft: #ece9ff;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-}
+  --color-ink: #0e0e10;
+  --color-panel: #1c1c21;
+  --color-paper: #f5f3ea;
+  --color-dim: #a6a6b0;
 
-:root {
-  --bg: #fafaf9;
-  --fg: #1c1917;
-  --muted: #57534e;
-  --card: #ffffff;
-  --line: #e7e5e4;
-}
+  --color-lime: #c4f542;
+  --color-pink: #ff7ad9;
+  --color-sun: #ffd23f;
+  --color-aqua: #5ce1e6;
+  --color-tang: #ff9f45;
+  --color-grape: #b69cff;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0c0a09;
-    --fg: #f5f5f4;
-    --muted: #a8a29e;
-    --card: #1c1917;
-    --line: #292524;
-    --color-accent-soft: #2a2550;
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --shadow-brutal-sm: 3px 3px 0 0 var(--color-paper);
+  --shadow-brutal: 5px 5px 0 0 var(--color-paper);
+  --shadow-brutal-lg: 8px 8px 0 0 var(--color-paper);
+
+  --animate-pop: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  --animate-page: page-in 0.35s ease-out backwards;
+  --animate-marquee: marquee 28s linear infinite;
+  --animate-wiggle: wiggle 0.5s ease-in-out;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-spin-slow: spin 30s linear infinite;
+  --animate-spin-slow-reverse: spin-reverse 40s linear infinite;
+  --animate-fade-up: fade-up 0.8s ease-out both;
+  --animate-wave: wave 2.4s ease-in-out infinite;
+  --animate-grid: grid-pan 20s linear infinite;
+
+  @keyframes pop {
+    0% { opacity: 0; transform: translateY(40px) scale(0.85) rotate(-4deg); }
+    60% { opacity: 1; transform: translateY(-6px) scale(1.03) rotate(1deg); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes page-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-18px) rotate(3deg); }
+  }
+  @keyframes spin-reverse {
+    to { transform: rotate(-360deg); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes wave {
+    0%, 60%, 100% { transform: rotate(0deg); }
+    10%, 30% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(10deg); }
+  }
+  @keyframes grid-pan {
+    to { background-position: 48px 48px; }
   }
 }
 
+/* The signature box: thick border + hard shadow */
+@utility brutal {
+  border: 3px solid var(--color-paper);
+  border-radius: 14px;
+  box-shadow: var(--shadow-brutal);
+}
+
+/* Lifts on hover, squashes into its shadow on click */
+@utility brutal-press {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  &:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-brutal-lg);
+  }
+  &:active {
+    transform: translate(4px, 4px);
+    box-shadow: 1px 1px 0 0 var(--color-paper);
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+:root {
+  color-scheme: dark;
+}
+
 html {
-  scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
+  overflow-x: clip;
+  background-color: var(--color-ink);
+  background-image: radial-gradient(#2b2b33 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  color: var(--color-paper);
+}
+
+::selection {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+/* Keeps orbiting badges upright while their ring rotates */
+.orbit-ring > * {
+  animation: inherit;
+  animation-direction: reverse;
+}
+
+.tech-grid {
+  background-image:
+    linear-gradient(#26262d 1px, transparent 1px),
+    linear-gradient(90deg, #26262d 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
